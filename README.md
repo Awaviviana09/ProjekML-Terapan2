@@ -61,29 +61,125 @@ Dataset ini terdiri dari 14,952 entri yang masing-masing mewakili satu judul ani
 
 Dalam bagian ini, kita akan membahas beberapa visualisasi yang memberikan gambaran lebih jelas mengenai dataset anime yang digunakan. Berikut adalah tiga visualisasi utama yang dapat membantu memahami distribusi dan pola dalam data.
 
-#### - Distribusi Jumlah Anime Berdasarkan Tipe
-Visualisasi ini menunjukkan distribusi jumlah anime berdasarkan tipe (misalnya, TV Series, Movie, OVAs, dll). Dari visualisasi ini, kita dapat melihat tipe anime yang paling banyak ditemukan dalam dataset. Ini akan memberikan informasi tentang seberapa populer atau dominannya setiap tipe anime di dalam koleksi dataset kita.
+- **Distribusi Jumlah Anime Berdasarkan Tipe**  
+   Visualisasi ini menunjukkan jumlah anime berdasarkan tipe (TV, Movie, OVA, dll). Gambar di atas membantu memahami jenis anime yang mendominasi dataset.
 
-![Distribusi Jumlah Anime](https://github.com/user-attachments/assets/aa264b76-2028-4389-8929-f802f8318dee)
+- **Top 20 Anime dengan Rating Tertinggi**  
+   Gambar ini menampilkan daftar 20 anime dengan skor tertinggi yang menunjukkan anime paling populer di dataset.
 
-- Bar chart yang menunjukkan jumlah anime untuk masing-masing tipe seperti TV Series, Movie, OVA, dll.
+- **10 Genre Anime Terbanyak**  
+   Visualisasi ini memperlihatkan genre yang paling sering muncul, memberikan wawasan tentang preferensi genre dalam dataset.
 
-#### - Top 20 Anime dengan Rating Tertinggi
-Dalam visualisasi ini, kita menampilkan 20 anime dengan rating tertinggi berdasarkan skor yang diberikan oleh pengguna. Ini memberikan gambaran mengenai anime yang paling disukai dan mendapat penilaian terbaik. Visualisasi ini membantu kita untuk melihat anime mana saja yang paling dihargai oleh komunitas.
 
-![top](https://github.com/user-attachments/assets/cd13053f-940b-4fc8-bbf3-84a47fb930c9)
+Berikut adalah tabel yang berisi gambar visualisasi untuk setiap analisis:
 
-- Bar chart atau horizontal bar chart berikut menampilkan nama anime dan skor tertinggi mereka.
 
-#### - 10 Genre Anime Terbanyak
-Visualisasi ini memperlihatkan genre-genre anime yang paling banyak muncul dalam dataset. Setiap anime dapat memiliki lebih dari satu genre, sehingga genre yang muncul lebih dari sekali akan lebih sering tampil dalam daftar ini. Dengan visualisasi ini, kita bisa memahami genre anime yang paling populer dan sering dicari oleh pengguna.
+| **Visualisasi**                         | **Gambar**                                                                                           |
+|-----------------------------------------|-----------------------------------------------------------------------------------------------------|
+| **Distribusi Jumlah Anime Berdasarkan Tipe** | ![Distribusi Jumlah Anime](https://github.com/user-attachments/assets/aa264b76-2028-4389-8929-f802f8318dee)                               |
+| **Top 20 Anime dengan Rating Tertinggi** | ![top](https://github.com/user-attachments/assets/cd13053f-940b-4fc8-bbf3-84a47fb930c9)                                   |
+| **10 Genre Anime Terbanyak**            | ![genre](https://github.com/user-attachments/assets/bc09aa50-ac69-49ee-bc07-8d30c9548ea8)                                               |
 
-![genre](https://github.com/user-attachments/assets/bc09aa50-ac69-49ee-bc07-8d30c9548ea8)
-
-- Bar chart yang menampilkan genre dengan jumlah anime terbanyak. Ini memungkinkan kita untuk mengetahui genre yang paling banyak ditemukan dalam koleksi dataset.
 
 Dengan visualisasi ini, kita bisa mendapatkan wawasan yang lebih mendalam tentang bagaimana distribusi anime dalam berbagai kategori (tipe dan genre), serta mengidentifikasi anime-anime yang paling populer berdasarkan rating.
 
 ## Data Preparation
 ---
 Berikut adalah tahapan-tahapan dalam melakukan pra-pemrosesan data:
+
+
+### **1. Penanganan Nilai Hilang**
+Pada tahap awal, dilakukan identifikasi nilai hilang. Berikut adalah jumlah nilai hilang sebelum dilakukan pembersihan:
+
+| Kolom       | Nilai Hilang |
+|-------------|--------------|
+| Name        | 0            |
+| Score       | 0            |
+| Genres      | 0            |
+| Type        | 0            |
+| sypnopsis   | 1350         |
+| Studios     | 0            |
+| Episodes    | 0            |
+| Rating      | 0            |
+
+Kolom **sypnopsis** ditemukan memiliki 1.350 baris dengan nilai kosong, sedangkan kolom lainnya tidak memiliki nilai hilang. Untuk memastikan integritas data, baris dengan nilai kosong pada kolom ini dihapus.
+
+Setelah pembersihan, jumlah nilai hilang adalah sebagai berikut:
+
+| Kolom       | Nilai Hilang |
+|-------------|--------------|
+| Name        | 0            |
+| Score       | 0            |
+| Genres      | 0            |
+| Type        | 0            |
+| sypnopsis   | 0            |
+| Studios     | 0            |
+| Episodes    | 0            |
+| Rating      | 0            |
+
+Jumlah data setelah pembersihan adalah **13.602 baris**. 
+
+---
+
+### **2. Jumlah Data Sebelum dan Sesudah Pembersihan**
+
+| Kondisi                 | Jumlah Data |
+|-------------------------|-------------|
+| Sebelum Pembersihan     | 14.952      |
+| Setelah Pembersihan     | 13.602      |
+
+Sebanyak **1.350 baris** dihapus karena adanya nilai hilang pada kolom **sypnopsis**.
+
+---
+
+### **3. Penghapusan Kolom yang Tidak Dibutuhkan**
+Beberapa kolom yang tidak relevan untuk analisis lebih lanjut dihapus, yaitu:
+
+- **anime_id**
+- **English name**
+- **Japanese name**
+- **Aired**
+- **Premiered**
+- **Producers**
+- **Licensors**
+- **Source**
+- **Duration**
+- **Ranked**
+- **Popularity**
+- **Members**
+- **Favorites**
+- **Watching**
+- **Completed**
+- **On-Hold**
+- **Dropped**
+
+Setelah penghapusan kolom, dataset hanya menyisakan kolom berikut untuk dianalisis lebih lanjut:
+
+| **Kolom**    | **Deskripsi**                                                    |
+|--------------|------------------------------------------------------------------|
+| Name         | Nama anime                                                      |
+| Score        | Skor rating dari pengguna                                       |
+| Genres       | Genre atau kategori anime                                       |
+| sypnopsis    | Sinopsis anime                                                  |
+| Type         | Jenis anime (TV, Movie, dll.)                                   |
+| Episodes     | Jumlah episode                                                  |
+| Studios      | Studio produksi anime                                           |
+| Rating       | Rating berdasarkan kategori usia (PG-13, R, dll.)               |
+
+---
+
+### **4. Informasi Dataset Setelah Pembersihan**
+Dataset yang telah dibersihkan memiliki struktur sebagai berikut:
+
+- Jumlah baris: **13.602**
+- Jumlah kolom: **8**
+- Tipe data: Kombinasi integer, float, dan object.
+
+
+
+
+
+
+# Modeling
+---
+

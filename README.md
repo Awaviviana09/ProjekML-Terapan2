@@ -2,55 +2,26 @@
 ---
 ## Domain Proyek 
 ---
-Proyek ini berfokus pada penerapan machine learning di bidang hiburan, khususnya pada rekomendasi anime, dengan judul proyek "Sistem Rekomendasi Anime Menggunakan Algoritma Cosine Similarity dan Collaborative Filtering".
+Proyek ini berfokus pada penerapan machine learning di bidang hiburan, khususnya pada rekomendasi anime. Ini adalah proyek akhir sistem rekomendasi untuk memenuhi submission dicoding. Proyek ini membangun model berbasis content based filtering yang dapat menentukan top-N rekomendasi anime.
 
 
 
 * #####  Latar Belakang
-Rekomendasi anime menjadi salah satu solusi penting dalam industri hiburan, mengingat jumlah judul anime yang terus berkembang. 
-Dengan banyaknya pilihan anime yang tersedia, banyak pengguna yang kesulitan menemukan anime yang sesuai dengan preferensi mereka. 
-Oleh karena itu, pengembangan sistem rekomendasi yang efektif dan efisien menjadi sangat penting. Berbagai metode telah diterapkan untuk meningkatkan kualitas rekomendasi, baik itu melalui pendekatan berbasis konten, collaborative filtering, atau teknik hybrid yang menggabungkan keduanya.
-  
+
   ![](https://cloudfront-us-east-1.images.arcpublishing.com/infobae/AK5OFYSU3RDA5KJOIQDN4MXQRQ.jpg)
   
-Salah satu teknik yang populer adalah penggunaan cosine similarity untuk menghitung kemiripan antar item (anime) berdasarkan fitur yang ada, seperti genre, rating, atau atribut lainnya. 
-Metode ini memungkinkan sistem rekomendasi memberikan rekomendasi yang lebih relevan dan sesuai dengan preferensi pengguna, tanpa memerlukan data eksplisit tentang preferensi pengguna sebelumnya. 
-Penggunaan machine learning dalam sistem rekomendasi ini dapat mengungkap pola yang lebih kompleks yang sulit ditemukan dengan metode konvensional.
+Dalam dunia hiburan digital, platform streaming anime memiliki jumlah judul yang sangat banyak, membuat pengguna sering kesulitan memilih anime yang sesuai dengan preferensi mereka. Sistem rekomendasi dapat menjadi solusi untuk masalah ini, dengan memberikan saran anime yang relevan berdasarkan minat pengguna. Dengan memanfaatkan teknologi Content-Based Filtering, kita dapat membangun sistem rekomendasi yang mempertimbangkan kesamaan konten, seperti genre atau sinopsis, untuk memberikan rekomendasi anime yang sesuai dengan preferensi pengguna.
 ## Business Understanding
 ---
 #### Problem Statements
-Berdasarkan latar belakang di atas, beberapa masalah yang dapat diidentifikasi dalam proyek ini adalah:
-
-* Bagaimana cara merancang sistem rekomendasi anime yang mampu memberikan rekomendasi yang relevan kepada pengguna?
-* Apa faktor-faktor yang harus dipertimbangkan untuk meningkatkan akurasi rekomendasi dalam sistem?
-* Bagaimana cara mengatasi masalah sparsity dalam data pengguna dan item yang terbatas?
-* Algoritma apa yang paling efektif dalam memberikan rekomendasi anime yang tepat berdasarkan preferensi pengguna?
+Pengguna sering merasa kesulitan memilih anime yang sesuai dengan preferensi mereka karena banyaknya pilihan yang tersedia. Tanpa sistem rekomendasi, pengguna memerlukan waktu lebih lama untuk menemukan anime yang sesuai dengan minat mereka, yang dapat mengurangi pengalaman menonton.
 
 
 #### Goals
-* Mengembangkan sistem rekomendasi anime menggunakan cosine similarity dan algoritma collaborative filtering.
-* Mengoptimalkan akurasi sistem rekomendasi sehingga mampu memberikan rekomendasi dengan relevansi tinggi sesuai dengan rating atau preferensi pengguna.
-* Membangun model yang dapat memberikan rekomendasi untuk pengguna berdasarkan input berupa anime favorit atau preferensi genre.
+Tujuan dari proyek ini adalah untuk menyediakan rekomendasi anime yang lebih relevan dan personal bagi pengguna. Dengan menggunakan sistem rekomendasi berbasis konten, pengguna dapat dengan cepat menemukan anime yang sesuai dengan selera mereka, berdasarkan anime yang sudah mereka tonton atau pilih sebelumnya. Sistem ini bertujuan untuk meningkatkan pengalaman menonton pengguna dengan memberikan pilihan anime yang tepat.
 
 #### Solution Statements
-Untuk mencapai tujuan proyek ini, beberapa solusi yang dapat diterapkan adalah:
-
-* Data Preprocessing:
-
-  * Membersihkan dan menyiapkan data anime, termasuk penghapusan data yang tidak relevan dan pengisian nilai yang hilang.
-  * Melakukan konversi data ke format yang sesuai untuk model, termasuk encoding kategori seperti genre dan studio.
-  * Melakukan pembagian data menjadi data latih dan uji untuk menguji performa model.
-
-* Algoritma Rekomendasi:
-
-  * Cosine Similarity: Digunakan untuk menghitung kemiripan antar anime berdasarkan atribut yang ada, seperti genre, rating, dan studi yang terlibat. Teknik ini berguna untuk menemukan anime yang mirip dengan anime yang disukai pengguna.
-  * Collaborative Filtering: Menggunakan data interaksi pengguna (misalnya rating) untuk memberikan rekomendasi berdasarkan preferensi pengguna yang serupa. Metode ini dapat meningkatkan relevansi rekomendasi dengan memanfaatkan data interaksi antar pengguna.
-  * Matrix Factorization: Sebagai metode alternatif yang dapat digunakan untuk menangani masalah sparsity dalam data rekomendasi, dengan memecah matriks interaksi pengguna-item menjadi dua matriks yang lebih kecil dan memprediksi rating yang hilang.
-
-* Evaluasi Model:
-
-  * Mengukur performa sistem rekomendasi dengan menggunakan metrik seperti akurasi dan presisi. Akurasi dapat dihitung berdasarkan seberapa sering rekomendasi anime yang relevan ditemukan dalam daftar top-N rekomendasi.
-  * Precision dihitung dengan membandingkan anime yang direkomendasikan dengan anime yang disukai pengguna, serta mengukur persentase rekomendasi yang memiliki rating tinggi (di atas threshold yang ditentukan).
+Solusi yang dapat diimplementasikan untuk mencapai tujuan ini adalah dengan membangun model sistem rekomendasi menggunakan Content-Based Filtering. Dengan pendekatan ini, sistem akan memberikan rekomendasi anime yang relevan berdasarkan konten yang dimiliki, seperti genre dan sinopsis. Metode Cosine Similarity akan digunakan untuk mengukur kesamaan antara anime, memungkinkan sistem memberikan daftar anime yang paling mirip dengan anime yang sudah dipilih oleh pengguna.
 
 
 ## Data Understanding
@@ -69,4 +40,50 @@ Jenis dan Ukuran Berkas | CSV (9.72 mB)
 
 Pada tahap ini, kita akan menganalisis struktur dan karakteristik dataset yang digunakan. Dataset terdiri dari 9 kolom dan 4001 baris, dengan rincian sebagai berikut:
 
-###  1. Deskripsi Data
+### __1. Deskripsi Data__
+
+Dataset ini terdiri dari 14,952 entri yang masing-masing mewakili satu judul anime. Ada 25 kolom yang menyimpan berbagai informasi tentang anime, seperti nama, genre, skor, dan deskripsi singkat. Beberapa kolom penting yang kita gunakan dalam sistem rekomendasi adalah:
+- **Name**: Nama anime.
+- **Score**: Skor rata-rata yang diberikan oleh pengguna.
+- **Genres**: Genre atau kategori anime (misalnya, Action, Drama, Sci-Fi).
+- **Synopsis**: Deskripsi singkat tentang anime.
+- **Type**: Jenis anime (misalnya, TV Series, Movie).
+- **Studios**: Studio yang memproduksi anime.
+- **Rating**: Rating konten anime (misalnya, PG, R).
+
+### __2. Statistik Dasar__
+
+- **Jumlah Entri**: 14,952 anime.
+- **Kolom yang Tersedia**: Ada 25 kolom dengan data yang beragam seperti angka (numeric) dan kategori (kategori teks).
+- **Data Missing**: Beberapa kolom seperti *Synopsis* dan *Ranked* memiliki nilai yang hilang pada beberapa entri.
+
+### __3. Visualisasi__
+
+Dalam bagian ini, kita akan membahas beberapa visualisasi yang memberikan gambaran lebih jelas mengenai dataset anime yang digunakan. Berikut adalah tiga visualisasi utama yang dapat membantu memahami distribusi dan pola dalam data.
+
+#### - Distribusi Jumlah Anime Berdasarkan Tipe
+Visualisasi ini menunjukkan distribusi jumlah anime berdasarkan tipe (misalnya, TV Series, Movie, OVAs, dll). Dari visualisasi ini, kita dapat melihat tipe anime yang paling banyak ditemukan dalam dataset. Ini akan memberikan informasi tentang seberapa populer atau dominannya setiap tipe anime di dalam koleksi dataset kita.
+
+![Distribusi Jumlah Anime](https://github.com/user-attachments/assets/aa264b76-2028-4389-8929-f802f8318dee)
+
+- Bar chart yang menunjukkan jumlah anime untuk masing-masing tipe seperti TV Series, Movie, OVA, dll.
+
+#### - Top 20 Anime dengan Rating Tertinggi
+Dalam visualisasi ini, kita menampilkan 20 anime dengan rating tertinggi berdasarkan skor yang diberikan oleh pengguna. Ini memberikan gambaran mengenai anime yang paling disukai dan mendapat penilaian terbaik. Visualisasi ini membantu kita untuk melihat anime mana saja yang paling dihargai oleh komunitas.
+
+![top](https://github.com/user-attachments/assets/cd13053f-940b-4fc8-bbf3-84a47fb930c9)
+
+- Bar chart atau horizontal bar chart berikut menampilkan nama anime dan skor tertinggi mereka.
+
+#### - 10 Genre Anime Terbanyak
+Visualisasi ini memperlihatkan genre-genre anime yang paling banyak muncul dalam dataset. Setiap anime dapat memiliki lebih dari satu genre, sehingga genre yang muncul lebih dari sekali akan lebih sering tampil dalam daftar ini. Dengan visualisasi ini, kita bisa memahami genre anime yang paling populer dan sering dicari oleh pengguna.
+
+![genre](https://github.com/user-attachments/assets/bc09aa50-ac69-49ee-bc07-8d30c9548ea8)
+
+- Bar chart yang menampilkan genre dengan jumlah anime terbanyak. Ini memungkinkan kita untuk mengetahui genre yang paling banyak ditemukan dalam koleksi dataset.
+
+Dengan visualisasi ini, kita bisa mendapatkan wawasan yang lebih mendalam tentang bagaimana distribusi anime dalam berbagai kategori (tipe dan genre), serta mengidentifikasi anime-anime yang paling populer berdasarkan rating.
+
+## Data Preparation
+---
+Berikut adalah tahapan-tahapan dalam melakukan pra-pemrosesan data:

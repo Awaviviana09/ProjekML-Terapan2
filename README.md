@@ -183,3 +183,70 @@ Dataset yang telah dibersihkan memiliki struktur sebagai berikut:
 # Modeling
 ---
 
+Dalam proyek ini, digunakan pendekatan content-based filtering untuk merekomendasikan anime berdasarkan kemiripan atribut konten seperti genre. Pendekatan ini bergantung pada pengolahan teks menjadi representasi numerik menggunakan metode TF-IDF (Term Frequency-Inverse Document Frequency) dan penghitungan kemiripan menggunakan Cosine Similarity. Berikut adalah penjelasan teori yang mendasari metode ini, kelebihan, kekurangan, serta implementasi dan pengujian modelnya.
+
+### 1. Algoritma yang Digunakan
+
+#### 1.1 TF-IDF (Term Frequency - Inverse Document Frequency)
+
+**TF-IDF** adalah metode yang digunakan untuk mengubah data teks menjadi vektor numerik. Setiap kata diberikan bobot yang lebih tinggi jika kata tersebut sering muncul dalam dokumen tertentu, namun jarang ditemukan dalam dokumen lainnya. Ini memastikan bahwa kata-kata yang lebih relevan untuk suatu dokumen akan diberi bobot lebih besar.
+
+#### Rumus TF-IDF:
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/06202bcb-9e97-4269-b7fa-daa9ab60e6f6" alt="tf-idf">
+</p>
+
+
+Di mana:
+
+![pisah rumus](https://github.com/user-attachments/assets/e3ec8588-212e-45a8-bce7-bab771a3a944)
+
+
+Keterangan:
+
+    - \( t \) adalah term atau kata yang sedang dihitung.
+    - \( d \) adalah dokumen tempat kata \( t \) muncul.
+    - \( N \) adalah jumlah total dokumen dalam koleksi data.
+
+
+
+#### 1.2 Cosine Similarity
+
+Setelah mengubah data teks menjadi vektor menggunakan TF-IDF, kita menghitung kesamaan antara anime menggunakan **Cosine Similarity**. Cosine Similarity mengukur kesamaan antara dua vektor dengan menghitung sudut antara keduanya. Semakin kecil sudutnya, semakin mirip kedua vektor tersebut.
+
+#### Rumus Cosine Similarity:
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/25b0a410-58a1-4988-a597-699120475bf1" alt="tf-idf">
+</p>
+
+Keterangan:
+
+    - (A·B)menyatakan produk titik dari vektor A dan B.
+    - ||A|| mewakili norma Euclidean (magnitudo) dari vektor A.
+    - ||B|| mewakili norma Euclidean (magnitudo) dari vektor B.
+
+Untuk melakukan pengujian model, digunakan potongan kode berikut.
+
+## 3. Implementasi Model
+
+### 3.1 Proses Pembuatan Model
+
+1. **Menggunakan TfidfVectorizer**: Kami menggunakan `TfidfVectorizer` dari pustaka `sklearn` untuk mengubah data teks (kolom 'Genres') menjadi representasi vektor TF-IDF.
+   
+```python
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
+
+# Menggunakan TfidfVectorizer untuk menghasilkan matriks TF-IDF
+tfidf_vectorizer = TfidfVectorizer()
+tfidf_matrix = tfidf_vectorizer.fit_transform(df['Genres'])
+
+# Menghitung Cosine Similarity antara anime
+cosine_sim = cosine_similarity(tfidf_matrix)
+
+# Membuat DataFrame dari Cosine Similarity
+cosine_sim_df = pd.DataFrame(cosine_sim, index=df['Name'], columns=df['Name'])
+print("Shape dari cosine similarity matrix:", cosine_sim_df.shape)

@@ -183,7 +183,23 @@ Dataset yang telah dibersihkan memiliki struktur sebagai berikut:
 # Modeling
 ---
 
+## _Content-Based Filtering_
+
 Dalam proyek ini, digunakan pendekatan content-based filtering untuk merekomendasikan anime berdasarkan kemiripan atribut konten seperti genre. Pendekatan ini bergantung pada pengolahan teks menjadi representasi numerik menggunakan metode TF-IDF (Term Frequency-Inverse Document Frequency) dan penghitungan kemiripan menggunakan Cosine Similarity. Berikut adalah penjelasan teori yang mendasari metode ini, kelebihan, kekurangan, serta implementasi dan pengujian modelnya.
+
+- Kelebihan:
+  - Memberikan rekomendasi yang relevan sesuai preferensi pengguna.
+  - Tidak bergantung pada data pengguna lain, hanya pada interaksi pengguna tersebut.
+  - Dapat digunakan untuk pengguna baru yang sudah memiliki sedikit data interaksi.
+  - Mudah dijelaskan karena rekomendasi didasarkan pada kesamaan atribut.
+  - Skalabel selama data atribut tersedia.
+
+- Kekurangan:
+  - Sulit merekomendasikan item baru yang belum memiliki data (cold start).
+  - Hanya merekomendasikan item yang mirip, sehingga kurang memberikan variasi.
+  - Bergantung pada kualitas data atribut konten.
+  - Terbatas pada item yang serupa, sehingga eksplorasi pengguna berkurang.
+  - Membutuhkan waktu untuk mengolah data atribut agar akurat.
 
 ### 1. Algoritma yang Digunakan
 
@@ -236,9 +252,35 @@ Untuk melakukan pengujian model, digunakan potongan kode berikut.
 #### 2.1 Proses Pembuatan Model
 
 - Fungsi Rekomendasi, Fungsi berikut mengambil anime tertentu dan mengembalikan daftar rekomendasi berdasarkan kemiripan tertinggi:
-![Screenshot 2024-11-19 111623](https://github.com/user-attachments/assets/c345f469-1f1f-4908-b39f-d5c25d6dbf00)
 
-- Uji Coba Model Sebagai contoh, diberikan input anime "Doraemon", berikut hasil rekomendasinya:
+
+      import pandas as pd
+      from IPython.display import display, HTML
+      
+      def anime_recommendations(anime_name, similarity_data, items, k=5):
+          """Dapatkan rekomendasi anime berdasarkan data kemiripan."""
+          index = similarity_data.loc[:, anime_name].to_numpy().argpartition(range(-1, -k, -1))
+          closest = similarity_data.columns[index[-1:-(k+1):-1]].drop(anime_name, errors='ignore')
+          return items[items['Name'].isin(closest)].head(k)
+      
+      def main():
+          anime_name = input("Masukkan nama anime: ").strip().lower()
+          df_lower = df.assign(Name=df['Name'].str.lower())
+      
+          if anime_name in df_lower['Name'].values:
+              recommendations = anime_recommendations(
+                  anime_name.capitalize(),
+                  cosine_sim_df,
+                  df[['Name', 'Score', 'Genres', 'sypnopsis', 'Type', 'Episodes', 'Studios', 'Rating']]
+              )
+              display(HTML(recommendations.to_html(index=False, justify='center')))
+          else:
+              print(f"Anime '{anime_name.capitalize()}' tidak ditemukan.")
+      
+      if __name__ == "__main__":
+          main()
+
+- Uji Coba Model Sebagai contoh, diberikan input anime "Naruto", berikut hasil rekomendasinya:
 
 
 | **Name**                      | **Score** | **Genres**                                           | **Synopsis**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | **Type**   | **Episodes** | **Studios**      | **Rating**               |
@@ -249,21 +291,67 @@ Untuk melakukan pengujian model, digunakan potongan kode berikut.
 | Boruto: Jump Festa 2016 Special | 6.22     | Action, Adventure, Comedy, Super Power, Martial Arts, Shounen | The special anime adaptation of Boruto will be screening at Shueisha’s by-invitation anime event Jump Special Anime Festa 2016!                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Special    | 1            | Studio Pierrot   | PG-13 - Teens 13 or older |
 
 
+Berdasarkan Tabel 1. Hasil Pengujian Model Content-Based Filtering (dengan Filter Genres), sistem telah berhasil merekomendasikan anime yang paling mirip dengan Naruto. Rekomendasi ini mencakup beberapa seri dan film dari waralaba Naruto itu sendiri, seperti Naruto: Shippuuden dan Boruto: Naruto Next Generations. Hal ini menunjukkan bahwa jika seorang pengguna menyukai Naruto, sistem dapat memberikan rekomendasi untuk seri atau film lain dalam waralaba yang sama. Dengan pendekatan ini, sistem mengidentifikasi anime-anime yang memiliki kemiripan dalam genre dengan Naruto, sehingga pengguna dapat menemukan konten yang relevan dengan preferensi mereka berdasarkan kesukaan terhadap anime tersebut.
 
-1. **Menggunakan TfidfVectorizer**: Kami menggunakan `TfidfVectorizer` dari pustaka `sklearn` untuk mengubah data teks (kolom 'Genres') menjadi representasi vektor TF-IDF.
-   
-```python
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-import pandas as pd
 
-# Menggunakan TfidfVectorizer untuk menghasilkan matriks TF-IDF
-tfidf_vectorizer = TfidfVectorizer()
-tfidf_matrix = tfidf_vectorizer.fit_transform(df['Genres'])
+## Evaluation
+---
 
-# Menghitung Cosine Similarity antara anime
-cosine_sim = cosine_similarity(tfidf_matrix)
+Untuk menentukan kinerja model, perlu untuk mengevaluasi model yang sudah dibangun. Evaluasi sistem rekomendasi dilakukan menggunakan metrik precision. Precision digunakan untuk mengukur sejauh mana sistem memberikan rekomendasi yang relevan terhadap kebutuhan pengguna. Dalam kasus ini, rekomendasi dianggap relevan jika skor anime (Score) lebih tinggi dari ambang batas tertentu, yaitu 5. Metrik ini bertujuan mengukur seberapa relevan rekomendasi yang dihasilkan oleh sistem terhadap kebutuhan pengguna. Berikut adalah penjelasan detail proses evaluasi.
 
-# Membuat DataFrame dari Cosine Similarity
-cosine_sim_df = pd.DataFrame(cosine_sim, index=df['Name'], columns=df['Name'])
-print("Shape dari cosine similarity matrix:", cosine_sim_df.shape)
+---
+__Proses Evaluasi__
+
+__1. Input Evaluasi:__
+
+Anime yang diinputkan oleh pengguna adalah "Doraemon".
+Sistem menghasilkan 10 rekomendasi teratas (top-10 recommendations) yang paling mirip dengan Doraemon, berdasarkan kesamaan atribut seperti genre, studio, dan skor (Score).
+
+__2. Definisi Relevansi:__
+
+Untuk menentukan relevansi, kami menetapkan ambang batas (threshold) skor sebesar 5.
+Anime dengan skor (Score) lebih besar dari 5 dianggap relevan, sedangkan yang lainnya tidak relevan.
+
+
+__3. Perhitungan Precision:__
+
+Precision dihitung dengan rumus berikut:
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/20de3ebe-f245-4aa6-98e2-a3d7e35974ec" alt="tf-idf">
+</p>
+
+Di mana:
+Jumlah Rekomendasi Relevan: Jumlah anime dalam daftar rekomendasi yang skornya melebihi ambang batas (Score > 5).
+
+Jumlah Total Rekomendasi (k): Total jumlah rekomendasi yang diberikan oleh sistem (dalam hal ini, 
+𝑘 = 10).
+
+__4. Hasil Evaluasi:__
+
+Dari hasil rekomendasi:
+9 dari 10 anime yang direkomendasikan memiliki skor lebih besar dari 5.
+Dengan demikian, precision dihitung sebagai berikut:
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e17abe3e-9195-4d67-a3ca-244b6fec2a20" alt="tf-idf">
+</p>
+
+kode program:
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/8f6f87e4-24d6-4c8c-829b-d1ec78e3060b">
+</p>
+
+Berdasarkan evaluasi di atas, precision sistem adalah 90%. Ini berarti, dari setiap 10 rekomendasi yang diberikan oleh sistem, 9 di antaranya relevan dengan kebutuhan pengguna. Hasil ini menunjukkan bahwa sistem mampu secara efektif merekomendasikan anime dengan kualitas yang sesuai berdasarkan preferensi input awal.
+
+
+### Kesimpulan
+---
+
+Sistem rekomendasi berbasis Content-Based Filtering yang diuji dengan input "Naruto" berhasil memberikan rekomendasi dengan tingkat relevansi yang baik, mencapai precision sebesar 90%. Hal ini menunjukkan bahwa sistem mampu mengenali dan merekomendasikan anime yang sesuai dengan preferensi pengguna berdasarkan kemiripan atribut. Meskipun demikian, terdapat peluang untuk meningkatkan akurasi dengan mempertimbangkan atribut tambahan seperti ulasan pengguna atau tingkat popularitas. Secara keseluruhan, sistem ini efektif untuk membantu pengguna menemukan konten yang relevan dan sesuai dengan kesukaannya.
+
+## Referensi
+--- 
+ 
+[1] Sellitasari, Shelvi., Ainurrasyid., & Suryanto, Agus. (2013). _PERBEDAAN PRODUKSI TANAMAN APEL (Malus sylvestris mill.) PADA AGROKLIMAT YANG BERBEDA (Studi Kasus Pada Sentra Produksi Tanaman Apel di Kota Batu dan Kabupaten Malang)_. Tersedia: [tautan](https://protan.studentjournal.ub.ac.id/index.php/protan/article/view/1). Diakses pada 24 Oktober 2024.

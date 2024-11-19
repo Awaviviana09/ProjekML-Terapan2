@@ -10,7 +10,7 @@ Proyek ini berfokus pada penerapan machine learning di bidang hiburan, khususnya
 
   ![](https://cloudfront-us-east-1.images.arcpublishing.com/infobae/AK5OFYSU3RDA5KJOIQDN4MXQRQ.jpg)
   
-Dalam dunia hiburan digital, platform streaming anime memiliki jumlah judul yang sangat banyak, membuat pengguna sering kesulitan memilih anime yang sesuai dengan preferensi mereka. Sistem rekomendasi dapat menjadi solusi untuk masalah ini, dengan memberikan saran anime yang relevan berdasarkan minat pengguna. Dengan memanfaatkan teknologi Content-Based Filtering, kita dapat membangun sistem rekomendasi yang mempertimbangkan kesamaan konten, seperti genre atau sinopsis, untuk memberikan rekomendasi anime yang sesuai dengan preferensi pengguna.
+Dalam dunia hiburan digital, platform streaming anime memiliki jumlah judul yang sangat banyak, membuat pengguna sering kesulitan memilih anime yang sesuai dengan preferensi mereka. Sistem rekomendasi dapat menjadi solusi untuk masalah ini, dengan memberikan saran anime yang relevan berdasarkan minat pengguna. Dengan memanfaatkan teknologi Content-Based Filtering, kita dapat membangun sistem rekomendasi yang mempertimbangkan kesamaan konten [[1]](https://online-journal.unja.ac.id/msa), seperti genre atau sinopsis, untuk memberikan rekomendasi anime yang sesuai dengan preferensi pengguna.
 ## Business Understanding
 ---
 #### Problem Statements
@@ -185,16 +185,16 @@ Dataset yang telah dibersihkan memiliki struktur sebagai berikut:
 
 ## _Content-Based Filtering_
 
-Dalam proyek ini, digunakan pendekatan content-based filtering untuk merekomendasikan anime berdasarkan kemiripan atribut konten seperti genre. Pendekatan ini bergantung pada pengolahan teks menjadi representasi numerik menggunakan metode TF-IDF (Term Frequency-Inverse Document Frequency) dan penghitungan kemiripan menggunakan Cosine Similarity. Berikut adalah penjelasan teori yang mendasari metode ini, kelebihan, kekurangan, serta implementasi dan pengujian modelnya.
+Dalam proyek ini, digunakan pendekatan content-based filtering untuk merekomendasikan anime berdasarkan kemiripan atribut konten seperti genre. Pendekatan ini bergantung pada pengolahan teks menjadi representasi numerik menggunakan metode TF-IDF (Term Frequency-Inverse Document Frequency) dan penghitungan kemiripan menggunakan Cosine Similarity [[1]](https://online-journal.unja.ac.id/msa). Berikut adalah penjelasan teori yang mendasari metode ini, kelebihan, kekurangan, serta implementasi dan pengujian modelnya.
 
-- Kelebihan:
+- Kelebihan [[2]](https://developers.google.com/machine-learning/recommendation/content-based/summary):
   - Memberikan rekomendasi yang relevan sesuai preferensi pengguna.
   - Tidak bergantung pada data pengguna lain, hanya pada interaksi pengguna tersebut.
   - Dapat digunakan untuk pengguna baru yang sudah memiliki sedikit data interaksi.
   - Mudah dijelaskan karena rekomendasi didasarkan pada kesamaan atribut.
   - Skalabel selama data atribut tersedia.
 
-- Kekurangan:
+- Kekurangan [[2]](https://developers.google.com/machine-learning/recommendation/content-based/summary):
   - Sulit merekomendasikan item baru yang belum memiliki data (cold start).
   - Hanya merekomendasikan item yang mirip, sehingga kurang memberikan variasi.
   - Bergantung pada kualitas data atribut konten.
@@ -203,7 +203,7 @@ Dalam proyek ini, digunakan pendekatan content-based filtering untuk merekomenda
 
 ### 1. Algoritma yang Digunakan
 
-#### 1.1 TF-IDF (Term Frequency - Inverse Document Frequency)
+#### 1.1 TF-IDF (Term Frequency - Inverse Document Frequency) [[1]](https://online-journal.unja.ac.id/msa).
 
 **TF-IDF** adalah metode yang digunakan untuk mengubah data teks menjadi vektor numerik. Setiap kata diberikan bobot yang lebih tinggi jika kata tersebut sering muncul dalam dokumen tertentu, namun jarang ditemukan dalam dokumen lainnya. Ini memastikan bahwa kata-kata yang lebih relevan untuk suatu dokumen akan diberi bobot lebih besar.
 
@@ -227,7 +227,7 @@ Keterangan:
 
 
 
-#### 1.2 Cosine Similarity
+#### 1.2 Cosine Similarity [[1]](https://online-journal.unja.ac.id/msa).
 
 Setelah mengubah data teks menjadi vektor menggunakan TF-IDF, kita menghitung kesamaan antara anime menggunakan **Cosine Similarity**. Cosine Similarity mengukur kesamaan antara dua vektor dengan menghitung sudut antara keduanya. Semakin kecil sudutnya, semakin mirip kedua vektor tersebut.
 
@@ -297,23 +297,23 @@ Berdasarkan Tabel 1. Hasil Pengujian Model Content-Based Filtering (dengan Filte
 ## Evaluation
 ---
 
-Untuk menentukan kinerja model, perlu untuk mengevaluasi model yang sudah dibangun. Evaluasi sistem rekomendasi dilakukan menggunakan metrik precision. Precision digunakan untuk mengukur sejauh mana sistem memberikan rekomendasi yang relevan terhadap kebutuhan pengguna. Dalam kasus ini, rekomendasi dianggap relevan jika skor anime (Score) lebih tinggi dari ambang batas tertentu, yaitu 5. Metrik ini bertujuan mengukur seberapa relevan rekomendasi yang dihasilkan oleh sistem terhadap kebutuhan pengguna. Berikut adalah penjelasan detail proses evaluasi.
+Untuk menentukan kinerja model, perlu untuk mengevaluasi model yang sudah dibangun. Evaluasi sistem rekomendasi dilakukan menggunakan metrik precision. Precision digunakan untuk mengukur sejauh mana sistem memberikan rekomendasi yang relevan terhadap kebutuhan pengguna. Dalam kasus ini, rekomendasi dianggap relevan jika skor anime (Score) lebih tinggi dari ambang batas tertentu, yaitu 5. Metrik ini bertujuan mengukur seberapa relevan rekomendasi yang dihasilkan oleh sistem terhadap kebutuhan pengguna. Berikut adalah penjelasan detail proses evaluasi [[3]](https://www.evidentlyai.com/ranking-metrics/precision-recall-at-k?form=MG0AV3).
 
 ---
-__Proses Evaluasi__
+__Proses Evaluasi__ [[3]](https://www.evidentlyai.com/ranking-metrics/precision-recall-at-k?form=MG0AV3).
 
 __1. Input Evaluasi:__
 
-Anime yang diinputkan oleh pengguna adalah "Doraemon".
-Sistem menghasilkan 10 rekomendasi teratas (top-10 recommendations) yang paling mirip dengan Doraemon, berdasarkan kesamaan atribut seperti genre, studio, dan skor (Score).
+Anime yang diinputkan oleh pengguna adalah "Naruro".
+Sistem menghasilkan 10 rekomendasi teratas (top-10 recommendations) yang paling mirip dengan Naruto, berdasarkan kesamaan atribut seperti genre, studio, dan skor (Score).
 
-__2. Definisi Relevansi:__
+__2. Definisi Relevansi:__ [[3]](https://www.evidentlyai.com/ranking-metrics/precision-recall-at-k?form=MG0AV3).
 
-Untuk menentukan relevansi, kami menetapkan ambang batas (threshold) skor sebesar 5.
+Untuk menentukan relevansi, disini ditetapkan ambang batas (threshold) skor sebesar 5.
 Anime dengan skor (Score) lebih besar dari 5 dianggap relevan, sedangkan yang lainnya tidak relevan.
 
 
-__3. Perhitungan Precision:__
+__3. Perhitungan Precision:__ [[3]](https://www.evidentlyai.com/ranking-metrics/precision-recall-at-k?form=MG0AV3).
 
 Precision dihitung dengan rumus berikut:
 
@@ -340,7 +340,7 @@ Dengan demikian, precision dihitung sebagai berikut:
 kode program:
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/8f6f87e4-24d6-4c8c-829b-d1ec78e3060b">
+  <img src="https://github.com/user-attachments/assets/312e9f7c-2730-45dd-a6be-027954379c35">
 </p>
 
 Berdasarkan evaluasi di atas, precision sistem adalah 90%. Ini berarti, dari setiap 10 rekomendasi yang diberikan oleh sistem, 9 di antaranya relevan dengan kebutuhan pengguna. Hasil ini menunjukkan bahwa sistem mampu secara efektif merekomendasikan anime dengan kualitas yang sesuai berdasarkan preferensi input awal.
@@ -353,5 +353,9 @@ Sistem rekomendasi berbasis Content-Based Filtering yang diuji dengan input "Nar
 
 ## Referensi
 --- 
- 
-[1] Sellitasari, Shelvi., Ainurrasyid., & Suryanto, Agus. (2013). _PERBEDAAN PRODUKSI TANAMAN APEL (Malus sylvestris mill.) PADA AGROKLIMAT YANG BERBEDA (Studi Kasus Pada Sentra Produksi Tanaman Apel di Kota Batu dan Kabupaten Malang)_. Tersedia: [tautan](https://protan.studentjournal.ub.ac.id/index.php/protan/article/view/1). Diakses pada 24 Oktober 2024.
+
+[1] Ridwansyah, Tegar., Subartini, Betti., & Sylviani, Sisilia. (2024). _Penerapan Metode Content-Based Filtering pada Sistem Rekomendasi_. Tersedia: [tautan](https://online-journal.unja.ac.id/msa). Diakses pada 19 November 2024.
+
+[2] Google Developers. (n.d.). _Content-based recommendation systems. Google_. Tersedia: [tautan] (https://developers.google.com/machine-learning/recommendation/content-based/summary). Diakses pada 19 November 2024.
+
+[3] Evidently AI. (n.d.). (2024).  _Precision at K and Recall at K. Evidently AI_. Tersedia: [tautan] (https://www.evidentlyai.com/ranking-metrics/precision-recall-at-k?form=MG0AV3). Diakses pada 19 November 2024.

@@ -175,8 +175,32 @@ Dataset yang telah dibersihkan memiliki struktur sebagai berikut:
 - Jumlah kolom: **8**
 - Tipe data: Kombinasi integer, float, dan object.
 
+---
 
 
+### **5. Feature Extraction**
+
+TF-IDF (Term Frequency - Inverse Document Frequency) [[1]](https://online-journal.unja.ac.id/msa).
+
+**TF-IDF** adalah metode yang digunakan untuk mengubah data teks menjadi vektor numerik. Setiap kata diberikan bobot yang lebih tinggi jika kata tersebut sering muncul dalam dokumen tertentu, namun jarang ditemukan dalam dokumen lainnya. Ini memastikan bahwa kata-kata yang lebih relevan untuk suatu dokumen akan diberi bobot lebih besar.
+
+#### Rumus TF-IDF:
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/06202bcb-9e97-4269-b7fa-daa9ab60e6f6" alt="tf-idf">
+</p>
+
+
+Di mana:
+
+![pisah rumus](https://github.com/user-attachments/assets/e3ec8588-212e-45a8-bce7-bab771a3a944)
+
+
+Keterangan:
+
+    - \( t \) adalah term atau kata yang sedang dihitung.
+    - \( d \) adalah dokumen tempat kata \( t \) muncul.
+    - \( N \) adalah jumlah total dokumen dalam koleksi data.
 
 
 
@@ -203,31 +227,7 @@ Dalam proyek ini, digunakan pendekatan content-based filtering untuk merekomenda
 
 ### 1. Algoritma yang Digunakan
 
-#### 1.1 TF-IDF (Term Frequency - Inverse Document Frequency) [[1]](https://online-journal.unja.ac.id/msa).
-
-**TF-IDF** adalah metode yang digunakan untuk mengubah data teks menjadi vektor numerik. Setiap kata diberikan bobot yang lebih tinggi jika kata tersebut sering muncul dalam dokumen tertentu, namun jarang ditemukan dalam dokumen lainnya. Ini memastikan bahwa kata-kata yang lebih relevan untuk suatu dokumen akan diberi bobot lebih besar.
-
-#### Rumus TF-IDF:
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/06202bcb-9e97-4269-b7fa-daa9ab60e6f6" alt="tf-idf">
-</p>
-
-
-Di mana:
-
-![pisah rumus](https://github.com/user-attachments/assets/e3ec8588-212e-45a8-bce7-bab771a3a944)
-
-
-Keterangan:
-
-    - \( t \) adalah term atau kata yang sedang dihitung.
-    - \( d \) adalah dokumen tempat kata \( t \) muncul.
-    - \( N \) adalah jumlah total dokumen dalam koleksi data.
-
-
-
-#### 1.2 Cosine Similarity [[1]](https://online-journal.unja.ac.id/msa).
+#### 1.1 Cosine Similarity [[1]](https://online-journal.unja.ac.id/msa).
 
 Setelah mengubah data teks menjadi vektor menggunakan TF-IDF, kita menghitung kesamaan antara anime menggunakan **Cosine Similarity**. Cosine Similarity mengukur kesamaan antara dua vektor dengan menghitung sudut antara keduanya. Semakin kecil sudutnya, semakin mirip kedua vektor tersebut.
 
@@ -243,9 +243,15 @@ Keterangan:
     - ||A|| mewakili norma Euclidean (magnitudo) dari vektor A.
     - ||B|| mewakili norma Euclidean (magnitudo) dari vektor B.
 
-Untuk melakukan pengujian model, digunakan potongan kode berikut.
+#### 1.2 Parameter Model
 
+Pada pembangunan model ini, beberapa parameter utama ditentukan untuk menghasilkan rekomendasi:
 
+- __Jumlah Rekomendasi (k)__: Model menghasilkan 𝑘 = 10 rekomendasi teratas untuk setiap anime.
+- __Similari Threshold__: Tidak digunakan batas minimal skor kesamaan, sehingga semua item dengan skor tertinggi dalam cakupan 𝑘 akan ditampilkan.
+- __Representasi Data__: Setiap anime direpresentasikan dalam bentuk vektor numerik yang mengandung informasi atribut konten seperti genre.
+
+Model ini dirancang untuk memberikan rekomendasi yang relevan dengan preferensi pengguna berdasarkan data konten, tanpa melibatkan informasi pengguna lain.
 
 ### 2. Implementasi Model
 

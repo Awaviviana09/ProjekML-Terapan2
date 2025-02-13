@@ -351,7 +351,7 @@ kode program:
 
 Berdasarkan evaluasi di atas, precision sistem adalah 90%. Ini berarti, dari setiap 10 rekomendasi yang diberikan oleh sistem, 9 di antaranya relevan dengan kebutuhan pengguna. Hasil ini menunjukkan bahwa sistem mampu secara efektif merekomendasikan anime dengan kualitas yang sesuai berdasarkan preferensi input awal.
 
-
+ 
 ### Kesimpulan
 ---
 
